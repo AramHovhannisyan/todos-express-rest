@@ -1,25 +1,20 @@
 import { Association, DataTypes, Model, Optional } from 'sequelize';
 import sequelize from './index';
 import { User } from './User';
-
-interface TokenAttributes {
-    id: number;
-    refreshToken: string;
-    userId: number;
-}
+import { TokenAttributes } from '../types/TokenTypes';
 
 type TokenCreationAttributes = Optional<TokenAttributes, 'id'>
 
 export class Token extends Model<TokenAttributes, TokenCreationAttributes> implements TokenAttributes {
-    public id!: number;
-    public refreshToken!: string;
-    public userId!: number;
+  public id!: number;
+  public refreshToken!: string;
+  public userId!: number;
 
-    public readonly user?: User;
+  public readonly user?: User;
 
-    public static associations: {
-        user: Association<Token, User>;
-    };
+  public static associations: {
+      user: Association<Token, User>;
+  };
 }
 
 Token.init(

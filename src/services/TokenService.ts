@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { User } from "../lib/models/User";
 import config from '../lib/config/config';
-import { Token } from '../lib/models/Token';
+import TokenRepository from '../repositories/TokenRepository';
 
 /**
  * Service to generate and verify JWT token
@@ -14,23 +14,15 @@ class TokenService {
     const refreshToken = await jwt.sign({ id, username, email }, config.jwt.refresh, { expiresIn: config.jwt.refreshExpiresIn} );
 
      // Save RefreshToken For User 
-    await this.saveToDB(user, refreshToken);
+    await TokenRepository.upsert(user, refreshToken);
 
     return { accessToken, refreshToken };
   }
 
-  static async saveToDB(user: User, refreshToken: string) {
-    const oldToken = await Token.findOne({ where: { userId: user.id} });
-
-    if (oldToken) {
-      return oldToken.update({ refreshToken });
-    }
-  
-    return await Token.create({ userId: user.id, refreshToken });
-  }
-
   static async remove(refreshToken: string) {
-    return await Token.destroy({ where: { refreshToken  } });
+    const removed = await TokenRepository.delete(refreshToken);
+    
+    return removed;
   }
 
   static async validateAccessToken(token: string) {
@@ -45,14 +37,16 @@ class TokenService {
     try {
       return jwt.verify(token, config.jwt.refresh);
     } catch (error) {
-      console.log("NOT VERIFIED:");
+      console.info("NOT VERIFIED:");
       
       return null;
     }
   }
 
-  static async getToken(refreshToken: string) {
-    return await Token.findOne({ where: { refreshToken } });
+  static async get(refreshToken: string) {
+    const token = TokenRepository.get(refreshToken);
+    
+    return token;
   }
 }
 

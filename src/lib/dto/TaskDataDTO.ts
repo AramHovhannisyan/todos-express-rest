@@ -1,4 +1,5 @@
-import { Task, TaskStatus } from "../models/Task";
+import { Task } from "../models/Task";
+import { TaskStatus } from "../types/TaskTypes";
 
 class TaskDataDTO {
   public title: string;

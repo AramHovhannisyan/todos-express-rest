@@ -1,31 +1,24 @@
 import AppError from "../lib/errorHandling/AppError";
-import { Task, TaskStatus } from "../lib/models/Task";
+import { TaskStatus } from "../lib/types/TaskTypes";
+import TaskRepository from "../repositories/TaskRepository";
 
 class TaskService {
-  static async getAll() {
-    const tasks = await Task.findAll();
-
-    return tasks;
-  }
-
+  /**
+   * Get all user's tasks
+   */
   static async getAllByUserId(userId: number) {
-    const tasks = await Task.findAll({ where: { userId } });
+    const tasks = await TaskRepository.getAll(userId);
 
     return tasks;
   }
 
   /**
-   * Create author
+   * Create task
    * Check for duplicate name
    */
   static async createOne(title: string, content: string, status: TaskStatus, userId: number) {
     try {
-      const task = await Task.create({
-        title,
-        content,
-        status,
-        userId,
-      });
+      const task = await TaskRepository.create(title, content, status, userId);
   
       return task;
     } catch (error: any) {
@@ -33,7 +26,7 @@ class TaskService {
       let errCode = 500;
 
       if (error?.original?.errno === 1062) {
-        errMsg = 'Author with provided name already exists';
+        errMsg = 'Task with provided name already exists';
         errCode = 400;
       } else {
         console.error("error:", error);
@@ -44,30 +37,20 @@ class TaskService {
   }
 
   static async getOne(id: number, userId: number) {
-    const task = await Task.findOne({
-      where: {
-        id,
-        userId,
-      }
-    });
+    const task = await TaskRepository.get(id, userId);
 
     return task;
   }
 
   /**
-   * Update author
+   * Update task
    * Full or partly update
-   * Check for unique book title
-   * Check if wrong author provided
+   * Check for unique task title
+   * Check if wrong task provided
    */
   static async updateOne(id: number, title: string, content: string, status: TaskStatus, userId: number) {
     try {
-      const task = await Task.findOne({
-        where: {
-          id,
-          userId,
-        }
-      });
+      const task = await TaskRepository.get(id, userId);
 
       if (!task) {
         return null;
@@ -85,18 +68,18 @@ class TaskService {
         task.status = status;
       }
 
-      await task.save();
+      const updatedTask = await TaskRepository.update(task)
 
-      return task;
+      return updatedTask;
     } catch (error: any) {
       let errMsg = 'Internal Server Error';
       let errCode = 500;
 
       if (error?.original?.errno === 1452) {
-        errMsg = 'Author with provided id not found';
+        errMsg = 'Task with provided id not found';
         errCode = 404;
       } else if (error?.original?.errno === 1062) {
-        errMsg = 'Author with provided name already exists';
+        errMsg = 'Task with provided name already exists';
         errCode = 400;
       } else {
         console.error("error:", error);
@@ -107,18 +90,13 @@ class TaskService {
   }
 
   static async deleteOne(id: number, userId: number) {
-    const task = await Task.findOne({
-      where: {
-        id,
-        userId,
-      }
-    });
+    const task = await TaskRepository.get(id, userId);
 
     if (!task) {
       return null;
     }
 
-    const deleted = await task.destroy();
+    const deleted = await TaskRepository.delete(task);
 
     return deleted;
   }

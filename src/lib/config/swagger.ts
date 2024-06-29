@@ -4,9 +4,9 @@ const options = {
   definition: {
       openapi: '3.0.0',
       info: {
-          title: 'Book Management System',
+          title: 'Task Management System',
           version: '1.0.0',
-          description: 'This API should allow for the management of books and authors, including creating, reading, updating, and deleting records.',
+          description: 'This API should allow for the management of tasks, including creating, reading, updating, and deleting records.',
       },
       components: {
         securitySchemes: {

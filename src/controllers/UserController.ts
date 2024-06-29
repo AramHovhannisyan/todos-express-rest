@@ -17,7 +17,7 @@ class UserController {
       // Insert user
       const user = await UserService.createOne(username, email, hashPass);
 
-      // Generate JWT token
+      // Generate JWT tokens ans save refresh token
       const tokens = await TokenService.generateAndSave(user);
       res.cookie('refreshToken', tokens.refreshToken, { maxAge: 15 * 24 * 60 * 60 * 1000, httpOnly: true });
       
@@ -32,21 +32,6 @@ class UserController {
       next(error);
     }
   };
-
-  static getAll = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const users = await UserService.getAll();
-  
-      return res.status(200).json({
-        status: 'success',
-        data: {
-          users,
-        }
-      });
-    } catch (error) {
-      next(error);
-    }
-  }
 }
 
 export default UserController;

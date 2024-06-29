@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { validateTaskCreationRequestBody } from '../validators/validateTaskCreationRequestBody';
-import { TaskStatus } from '../models/Task';
+import { TaskStatus } from '../types/TaskTypes';
 
 const validateTaskCreationRequestData = (req: Request, res: Response, next: NextFunction) => {
   const { error } = validateTaskCreationRequestBody(req.body);

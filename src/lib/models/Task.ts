@@ -2,19 +2,7 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import sequelize from './index';
 import { User } from './User';
-
-export enum TaskStatus {
-  PENDING = 'pending',
-  COMPLETED = 'completed'
-}
-
-interface TaskAttributes {
-  id: number;
-  title: string;
-  content: string;
-  userId: number;
-  status: TaskStatus;
-}
+import { TaskAttributes, TaskStatus } from '../types/TaskTypes';
 
 type TaskCreationAttributes = Optional<TaskAttributes, 'id'>
 

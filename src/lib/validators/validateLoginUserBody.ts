@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { LoginUserRequestType } from "../types/LoginUserRequestType";
+import { LoginUserRequestType } from "../types/RequestBodyTypes";
 
 // Login endpoint schema requires email or username
 const LoginUserRequestSchema = Joi.alternatives().try(

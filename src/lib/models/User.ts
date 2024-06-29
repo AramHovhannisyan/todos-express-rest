@@ -1,15 +1,6 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import sequelize from '../models/index';
-import { Task } from './Task';
-
-interface UserAttributes {
-  id: number;
-  username: string;
-  email: string;
-  password: string;
-}
-
-type UserCreationAttributes = Optional<UserAttributes, 'id'>
+import { UserAttributes, UserCreationAttributes } from '../types/UserTypes';
 
 export class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: number;

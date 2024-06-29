@@ -1,20 +1,22 @@
-import { Op } from "sequelize";
-import { User } from "../lib/models/User";
+import bcrypt from 'bcryptjs';
 import AppError from "../lib/errorHandling/AppError";
 import TokenService from "./TokenService";
+import UserService from "./UserService";
 
 // Authentication Service
 class AuthService {
   // Get user either with username or by email
-  static async loginUser(usernameOrEmail: string) {
-    const user = await User.findOne({
-      where: {
-        [Op.or]: [
-          { username: usernameOrEmail },
-          { email: usernameOrEmail },
-        ],
-      },
-    });
+  static async loginUser(usernameOrEmail: string, password: string) {
+    const user = await UserService.getOneByUsernameOrEmail(usernameOrEmail);
+    if (!user) {
+      throw new AppError('User with the provided data was not found.', 404);
+    }
+
+    // Validate password
+    const isPassCorrect = bcrypt.compareSync(password, user.password);
+    if (!isPassCorrect) {
+      throw new AppError('Wrong Password', 401);
+    }
 
     return user;
   }
@@ -42,17 +44,15 @@ class AuthService {
     }
 
     const userData = await TokenService.validateRefreshToken(refreshToken);
-    const existingToken = await TokenService.getToken(refreshToken);
+    const existingToken = await TokenService.get(refreshToken);
 
     // Validate refresh token, check for it's existence in DB
-    if (!userData || !existingToken || !(typeof userData === 'object')) {
-      console.log("userData:", userData);
-      
+    if (!userData || !existingToken || !(typeof userData === 'object')) {      
       throw new AppError(`You are not authorized`, 401);
     }
 
     // In case user data have bee changed
-    const user = await User.findByPk(userData.id);
+    const user = await UserService.getOne(userData.id);
 
     if (!user) {
       throw new AppError('User not found', 404);

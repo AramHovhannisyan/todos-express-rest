@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { RegisterUserRequestType } from '../types/RegisterUserRequestType';
+import { RegisterUserRequestType } from '../types/RequestBodyTypes';
 
 // Registration endpoint schema
 const RegisterUserRequestSchema = Joi.object({

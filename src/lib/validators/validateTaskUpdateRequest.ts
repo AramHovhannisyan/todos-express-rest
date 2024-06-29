@@ -1,6 +1,6 @@
 import JoiBase from 'joi';
 import JoiDate from '@joi/date';
-import { TaskStatus } from '../models/Task';
+import { TaskStatus } from '../types/TaskTypes';
 
 const Joi = JoiBase.extend(JoiDate);
 

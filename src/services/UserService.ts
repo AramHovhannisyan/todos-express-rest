@@ -1,5 +1,6 @@
 import AppError from "../lib/errorHandling/AppError";
 import { User } from "../lib/models/User";
+import UserRepository from "../repositories/UserRepository";
 
 /**
  * Insert user into DB
@@ -8,11 +9,13 @@ import { User } from "../lib/models/User";
 class UserService {
   static async createOne(username: string, email: string, password: string) {
     try {
-      const user = await User.create({
+      const userCreationData = {
         username,
         email,
         password
-      });
+      };
+
+      const user = await UserRepository.create(userCreationData);
   
       return user;
     } catch (error: any) {
@@ -30,10 +33,16 @@ class UserService {
     }
   }
 
-  static async getAll() {
-    const users = await User.findAll();
+  static async getOneByUsernameOrEmail(usernameOrEmail: string) {
+    const user = await UserRepository.getByUsernameOrEmail(usernameOrEmail);
 
-    return users;
+    return user;
+  }
+
+  static async getOne(id: number) {
+    const user = await UserRepository.get(id);
+
+    return user;
   }
 }
 

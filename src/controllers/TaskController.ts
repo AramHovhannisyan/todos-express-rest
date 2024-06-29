@@ -17,7 +17,7 @@ class TaskController {
         throw new AppError('Nothing was found.', 404);
       }
 
-      const taskDTOs = tasks.map(author => new TaskDataDTO(author));
+      const taskDTOs = tasks.map(task => new TaskDataDTO(task));
 
       return res.status(200).json({
         status: 'success',
@@ -31,7 +31,7 @@ class TaskController {
   }
 
   /**
-   * Get author by id
+   * Get task by id
    * Return DTO
    */
   static get = async (req: Request, res: Response,  next: NextFunction) => {
@@ -80,7 +80,7 @@ class TaskController {
   };
 
   /**
-   * Update author by id
+   * Update task by id
    * Return DTO
    */
   static update = async (req: Request, res: Response, next: NextFunction) => {
@@ -89,7 +89,7 @@ class TaskController {
     try {
       const task = await TaskService.updateOne(id, title, content, status, user.id);
       if (!task) {
-        throw new AppError('Author with the provided id was not found', 404);
+        throw new AppError('Task with the provided id was not found', 404);
       }
 
       const taskDTO = new TaskDataDTO(task);
@@ -107,15 +107,14 @@ class TaskController {
   };
 
   /**
-   * Delete author by id
+   * Delete task by id
    * Return 204 no content
    */
   static delete = async (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
-    const { user } = res.locals;
+    const { id, user } = res.locals;
     
     try {
-      const deleted = await TaskService.deleteOne(+id, user.id);
+      const deleted = await TaskService.deleteOne(id, user.id);
       if (!deleted) {
         throw new AppError('Task with the provided id was not found for current user', 404);
       }

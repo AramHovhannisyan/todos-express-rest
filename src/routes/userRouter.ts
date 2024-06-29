@@ -1,10 +1,8 @@
 import express from 'express';
 import UserController from '../controllers/UserController';
 import validateCreateUserData from '../lib/middlewares/validateCreateUserData';
-import authMiddleware from '../lib/middlewares/authMiddleware';
 
 const userRouter = express.Router();
-userRouter.route('/').get(authMiddleware, UserController.getAll);
 userRouter.route('/').post(validateCreateUserData, UserController.register);
 
 export default userRouter;

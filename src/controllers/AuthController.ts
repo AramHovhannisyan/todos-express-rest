@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import bcrypt from 'bcryptjs';
 import AuthService from '../services/AuthService';
-import AppError from '../lib/errorHandling/AppError';
 import TokenService from '../services/TokenService';
 
 /**
@@ -13,16 +11,7 @@ class AuthController {
 
     try {
       // Check if user exists
-      const user = await AuthService.loginUser(usernameOrEmail);
-      if (!user) {
-        throw new AppError('User with the provided data was not found.', 404);
-      }
-
-      // Validate password
-      const isPassCorrect = bcrypt.compareSync(password, user.password);
-      if (!isPassCorrect) {
-        throw new AppError('Wrong Password', 401);
-      }
+      const user = await AuthService.loginUser(usernameOrEmail, password);
 
       // Generate token
       const tokens = await TokenService.generateAndSave(user);
