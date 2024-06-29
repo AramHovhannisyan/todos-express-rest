@@ -124,6 +124,29 @@ class TaskController {
       next(error);
     }
   };
+
+  static markAs = async (req: Request, res: Response, next: NextFunction) => {
+    const { id, status, user } = res.locals;    
+
+    try {
+      const task = await TaskService.markOneAs(id, status, user.id);
+      if (!task) {
+        throw new AppError('Task with the provided id was not found', 404);
+      }
+
+      const taskDTO = new TaskDataDTO(task);
+
+      return res.status(200).json({
+        status: 'success',
+        data: {
+          task: taskDTO,
+        },
+      });
+    } catch (error) {
+      console.error("error:", error);
+      next(error);
+    }
+  };
 }
 
 export default TaskController;

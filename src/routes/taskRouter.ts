@@ -4,6 +4,7 @@ import TaskController from '../controllers/TaskController';
 import validateRequestParamId from '../lib/middlewares/validateRequestParamId';
 import validateTaskUpdateRequestData from '../lib/middlewares/validateTaskUpdateRequestData';
 import validateTaskCreationRequestData from '../lib/middlewares/validateTaskCreationRequest';
+import validateTaskMarkAsRequestData from '../lib/middlewares/validateTaskMarkAsRequestData';
 
 const taskRouter = express.Router();
 
@@ -18,6 +19,9 @@ taskRouter.route('/:id')
   .get(validateRequestParamId, TaskController.get)
   .put(validateRequestParamId, validateTaskUpdateRequestData, TaskController.update)
   .delete(validateRequestParamId, TaskController.delete);
+
+taskRouter.route('/:id/:status')
+  .patch(validateRequestParamId, validateTaskMarkAsRequestData, TaskController.markAs)
 
 export default taskRouter;
 

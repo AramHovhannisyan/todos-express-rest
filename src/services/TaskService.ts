@@ -100,6 +100,32 @@ class TaskService {
 
     return deleted;
   }
+
+  /**
+   * Update task status only
+   * Check if wrong user or task provided
+   */
+  static async markOneAs(id: number, status: TaskStatus, userId: number) {
+    try {
+      const task = await TaskRepository.get(id, userId);
+
+      if (!task) {
+        return null;
+      }
+
+      if (status) {
+        task.status = status;
+      }
+
+      const updatedTask = await TaskRepository.update(task)
+
+      return updatedTask;
+    } catch (error: any) {
+      console.error("error:", error);
+          
+      throw new AppError('Internal Server Error', 500);
+    }
+  }
 }
 
 export default TaskService;
