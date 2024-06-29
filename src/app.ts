@@ -79,7 +79,7 @@ async function start() {
         console.info(`Server is running on port ${port}`);
     });
   })
-  .catch((e) => console.error('\n\nError establishing a connection to the database', e));
+  .catch((e) => console.error('\n\nError establishing a connection to the database\n\n\n', e));
 }
 
 start();
