@@ -14,9 +14,6 @@ const DB_USERNAME = fromEnv('DB_USERNAME');
 const DB_PASSWORD = fromEnv('DB_PASSWORD');
 const DB_NAME = fromEnv('DB_NAME');
 
-const DB_ROOT_USERNAME = fromEnv('DB_ROOT_USERNAME');
-const DB_ROOT_PASSWORD = fromEnv('DB_ROOT_PASSWORD');
-
 const config = {
   jwt: {
     secret: JWT_ACCESS_SECRET,
@@ -33,10 +30,6 @@ const config = {
     user: DB_USERNAME,
     pass: DB_PASSWORD,
     name: DB_NAME,
-    root: {
-      user: DB_ROOT_USERNAME,
-      pass: DB_ROOT_PASSWORD,
-    }
   },
 };
 
