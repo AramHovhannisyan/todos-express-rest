@@ -13,11 +13,9 @@ export default userRouter;
  *   - name: User
  *     description: Operations related to user management such as registration
  *   - name: Authentication
- *     description: Operations related to user authentication such as login
- *   - name: Author
- *     description: CRUD Operations related to author management
- *   - name: Book
- *     description: CRUD Operations related to book management
+ *     description: Operations related to user authentication such as login, logout, refresh token update
+ *   - name: Task
+ *     description: CRUD Operations related to task management
  */
 
 /**

@@ -1,13 +1,13 @@
 import jwt from 'jsonwebtoken';
-import { User } from "../lib/models/User";
 import config from '../lib/config/config';
 import TokenRepository from '../repositories/TokenRepository';
+import UserDataDTO from '../lib/dto/UserDataDTO';
 
 /**
  * Service to generate and verify JWT token
  */
 class TokenService {
-  static async generateAndSave(user: User) {
+  static async generateAndSave(user: UserDataDTO) {
     const { id, username, email } = user;
 
     const accessToken = await jwt.sign({ id, username, email }, config.jwt.secret, { expiresIn: config.jwt.expiresIn} );

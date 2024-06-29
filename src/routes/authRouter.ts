@@ -76,5 +76,58 @@ export default authRouter;
  *       '404':
  *         description: Not found. User with the provided username/email was not found.
  *       '500':
- *         description: Internal server error.
+ *         description: Internal server error..
+ *
+ * /api/v1/auth/logout:
+ *   get:
+ *     tags:
+ *       - Authentication
+ *     summary: Log out the current user
+ *     description: Log out the current user and remove it's refresh token from db.
+ *     responses:
+ *       '205':
+ *         description: User logged out successfully
+ *       '401':
+ *         description: Unauthorized. Refresh token is not provided.
+ *
+ * /api/v1/auth/refresh:
+ *   get:
+ *     tags:
+ *       - Authentication
+ *     summary: Refresh user tokens
+ *     description: Refresh the access and refresh tokens for the current user.
+ *     responses:
+ *       '200':
+ *         description: Tokens refreshed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: success
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     user:
+ *                       type: object
+ *                       properties:
+ *                         id:
+ *                           type: integer
+ *                           example: 1
+ *                         username:
+ *                           type: string
+ *                           example: user1
+ *                         email:
+ *                           type: string
+ *                           example: user1@gmail.com
+ *                     accessToken:
+ *                       type: string
+ *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyMSIsImVtYWlsIjoidXNlcjFAZ21haWwuY29tIiwiaWF0IjoxNzE5NjU5MjcyLCJleHAiOjE3MTk2NjA0NzJ9.-9bSRUleQP2Fj-FZnXKEr4drM85F08xG5G8TcyTP2GE
+ *                     refreshToken:
+ *                       type: string
+ *                       example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJ1c2VyMSIsImVtYWlsIjoidXNlcjFAZ21haWwuY29tIiwiaWF0IjoxNzE5NjU5MjcyLCJleHAiOjE3MjA5NTUyNzJ9.ue6etDEgB8Ci6NLiSioDDT7Mpke7uqRsp6G2GJrUuaU
+ *       '401':
+ *         description: Unauthorized. Invalid refresh token
  */

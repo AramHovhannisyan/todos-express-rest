@@ -1,3 +1,4 @@
+import UserDataDTO from "../lib/dto/UserDataDTO";
 import AppError from "../lib/errorHandling/AppError";
 import { User } from "../lib/models/User";
 import UserRepository from "../repositories/UserRepository";
@@ -17,7 +18,7 @@ class UserService {
 
       const user = await UserRepository.create(userCreationData);
   
-      return user;
+      return new UserDataDTO(user);
     } catch (error: any) {
       let errMsg = '';
       let errCode = 500;

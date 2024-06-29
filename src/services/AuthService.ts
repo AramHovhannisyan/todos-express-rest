@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import AppError from "../lib/errorHandling/AppError";
 import TokenService from "./TokenService";
 import UserService from "./UserService";
+import UserDataDTO from '../lib/dto/UserDataDTO';
 
 // Authentication Service
 class AuthService {
@@ -18,7 +19,7 @@ class AuthService {
       throw new AppError('Wrong Password', 401);
     }
 
-    return user;
+    return new UserDataDTO(user);
   }
 
   /**
@@ -58,8 +59,7 @@ class AuthService {
       throw new AppError('User not found', 404);
     }
 
-    return user;
-    // return new UserDto(user);
+    return new UserDataDTO(user);
   }
 }
 

@@ -1,12 +1,12 @@
+import UserDataDTO from '../lib/dto/UserDataDTO';
 import { Token } from '../lib/models/Token';
-import { User } from "../lib/models/User";
 
 
 /**
  * Repository to interact with the DB for Model Token
  */
 class TokenRepository {
-  static async upsert(user: User, refreshToken: string) {
+  static async upsert(user: UserDataDTO, refreshToken: string) {
     const oldToken = await Token.findOne({ where: { userId: user.id} });
 
     if (oldToken) {
