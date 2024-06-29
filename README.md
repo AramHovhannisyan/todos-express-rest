@@ -30,8 +30,8 @@ You can access the Swagger documentation for this project at [http://localhost:$
 ### Authentication Routes
 
 - **POST /api/v1/auth/login**: Log in an existing user.
-- **POST /api/v1/auth/logout**: Log out the current user.
-- **POST /api/v1/auth/refresh**: Refresh the access and refresh tokens for the logged in user.
+- **GET  /api/v1/auth/logout**: Log out the current user.
+- **GET  /api/v1/auth/refresh**: Refresh the access and refresh tokens for the logged in user.
 
 ### Task Routes
 
@@ -40,7 +40,7 @@ You can access the Swagger documentation for this project at [http://localhost:$
 - **GET /api/v1/task/:id**: Get a specific task.
 - **PUT /api/v1/task/:id**: Update a specific task (including partial update).
 - **DELETE /api/v1/task/:id**: Delete a specific task.
-- **PATCH /api/v1/task/{id}/{status}**:Mark task as provided status (pending | completed).
+- **PATCH /api/v1/task/{id}/{status}**: Mark task as provided status (pending | completed). Endpoint for convenient use, you can use update task endpoint with providing only status
 
 ## Installation
 
@@ -78,13 +78,5 @@ To run the project locally, follow these steps:
 4. Start the server:
 
   ```bash
-  npm run start or npm run prod
-   ```
-
-5. Testing:
-
-  To run tests, use the following command:
-
-  ```bash
-  npm test
+  npm run start
    ```
