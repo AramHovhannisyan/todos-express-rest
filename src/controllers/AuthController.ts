@@ -6,6 +6,9 @@ import TokenService from '../services/TokenService';
  * Authentication controller
  */
 class AuthController {
+  /**
+   * Check user input data and generate pair of access and refresh tokens
+   */
   static login = async (req: Request, res: Response, next: NextFunction) => {
     const { usernameOrEmail, password } = res.locals;
 
@@ -30,6 +33,9 @@ class AuthController {
     }
   };
 
+  /**
+   * Logout user by removing user's refresh token from cookies and DB
+   */
   static logout = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const refreshToken = req.cookies.refreshToken;
@@ -43,6 +49,9 @@ class AuthController {
     }
   }
 
+  /**
+   * Generate new access and refresh tokens pair by pregenerated refresh token 
+   */
   static refreshToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
       // Getting new tokens

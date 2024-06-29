@@ -5,7 +5,7 @@ import TaskDataDTO from '../lib/dto/TaskDataDTO';
 
 class TaskController {
   /**
-   * Get all tasks
+   * Get all tasks for specified user
    * Return DTO
    */
   
@@ -31,7 +31,7 @@ class TaskController {
   }
 
   /**
-   * Get task by id
+   * Get users task by id
    * Return DTO
    */
   static get = async (req: Request, res: Response,  next: NextFunction) => {
@@ -40,7 +40,7 @@ class TaskController {
     try {
       const task = await TaskService.getOne(id, user.id);
       if (!task) {
-        throw new AppError('Task with the provided id was not found for current user', 404);
+        throw new AppError('Task with the specified ID was not found for current user', 404);
       }
 
       const taskDTO = new TaskDataDTO(task);
@@ -89,7 +89,7 @@ class TaskController {
     try {
       const task = await TaskService.updateOne(id, title, content, status, user.id);
       if (!task) {
-        throw new AppError('Task with the provided id was not found', 404);
+        throw new AppError('Task with the specified ID was not found for current user', 404);
       }
 
       const taskDTO = new TaskDataDTO(task);
@@ -116,7 +116,7 @@ class TaskController {
     try {
       const deleted = await TaskService.deleteOne(id, user.id);
       if (!deleted) {
-        throw new AppError('Task with the provided id was not found for current user', 404);
+        throw new AppError('Task with the specified ID was not found for current user', 404);
       }
 
       return res.status(204).send();
@@ -125,13 +125,17 @@ class TaskController {
     }
   };
 
+  /**
+   * Mark task as completed or pending
+   * Endpoint for convenient use, update task endpoint works fine
+   */
   static markAs = async (req: Request, res: Response, next: NextFunction) => {
     const { id, status, user } = res.locals;    
 
     try {
       const task = await TaskService.markOneAs(id, status, user.id);
       if (!task) {
-        throw new AppError('Task with the provided id was not found', 404);
+        throw new AppError('Task with the specified ID was not found for current user', 404);
       }
 
       const taskDTO = new TaskDataDTO(task);

@@ -13,6 +13,9 @@ class UserRepository {
     return user;
   }
 
+  /**
+   * Get user by specified email or username
+   */
   static async getByUsernameOrEmail(usernameOrEmail: string) {
     const user = await User.findOne({
       where: {
@@ -26,6 +29,9 @@ class UserRepository {
     return user
   }
 
+  /**
+   * Create User with UserCreationAttributes
+   */
   static async create(user: UserCreationAttributes) {
     const newUser = await User.create(user);
 

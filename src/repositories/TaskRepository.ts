@@ -1,7 +1,6 @@
 import { Task } from "../lib/models/Task";
 import { TaskStatus } from "../lib/types/TaskTypes";
 
-
 /**
  * Repository to interact with the DB for Model Task
  */

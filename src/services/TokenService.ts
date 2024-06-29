@@ -4,9 +4,12 @@ import TokenRepository from '../repositories/TokenRepository';
 import UserDataDTO from '../lib/dto/UserDataDTO';
 
 /**
- * Service to generate and verify JWT token
+ * Service to interact with JWT token
  */
 class TokenService {
+  /**
+   * Generate tokens and save refreshToken to DB
+   */
   static async generateAndSave(user: UserDataDTO) {
     const { id, username, email } = user;
 
@@ -19,12 +22,18 @@ class TokenService {
     return { accessToken, refreshToken };
   }
 
+  /**
+   * Remove refreshToken from DB
+   */
   static async remove(refreshToken: string) {
     const removed = await TokenRepository.delete(refreshToken);
     
     return removed;
   }
 
+  /**
+   * Validate accessToken
+   */
   static async validateAccessToken(token: string) {
     try {
       return jwt.verify(token, config.jwt.secret);
@@ -33,16 +42,20 @@ class TokenService {
     }
   }
 
+  /**
+   * Validate refreshToken
+   */
   static async validateRefreshToken(token: string) {
     try {
       return jwt.verify(token, config.jwt.refresh);
     } catch (error) {
-      console.info("NOT VERIFIED:");
-      
       return null;
     }
   }
 
+  /**
+   * Get token data by refreshToken
+   */
   static async get(refreshToken: string) {
     const token = TokenRepository.get(refreshToken);
     

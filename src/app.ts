@@ -15,7 +15,6 @@ import taskRouter from './routes/taskRouter';
 // Swagger
 import swaggerUi from 'swagger-ui-express';
 import specs from './lib/config/swagger';
-// import { initializeDatabase } from './lib/utils/dbUtils';
 
 const app = express();
 
@@ -53,7 +52,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 /**
  * Routes
- * Mounting Routes
  */
 app.get('/health', (req, res) => res.sendStatus(200));
 app.get('/favicon.ico', (req, res) => res.sendStatus(204));
@@ -75,8 +73,6 @@ app.use(globalErrorHandler);
 const port = config.server.port;
 
 async function start() {
-  // await initializeDatabase();
-
   sequelize.sync()
   .then(() => {
     app.listen(port, () => {

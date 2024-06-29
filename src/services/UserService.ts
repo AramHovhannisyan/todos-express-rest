@@ -1,6 +1,5 @@
 import UserDataDTO from "../lib/dto/UserDataDTO";
 import AppError from "../lib/errorHandling/AppError";
-import { User } from "../lib/models/User";
 import UserRepository from "../repositories/UserRepository";
 
 /**
@@ -34,12 +33,18 @@ class UserService {
     }
   }
 
+  /**
+   * Get user by specified email or username
+   */
   static async getOneByUsernameOrEmail(usernameOrEmail: string) {
     const user = await UserRepository.getByUsernameOrEmail(usernameOrEmail);
 
     return user;
   }
 
+  /**
+   * Get user by pk
+   */
   static async getOne(id: number) {
     const user = await UserRepository.get(id);
 

@@ -6,8 +6,8 @@ import UserDataDTO from '../lib/dto/UserDataDTO';
 
 // Authentication Service
 class AuthService {
-  // Get user either with username or by email
   static async loginUser(usernameOrEmail: string, password: string) {
+    // Get user either with username or by email
     const user = await UserService.getOneByUsernameOrEmail(usernameOrEmail);
     if (!user) {
       throw new AppError('User with the provided data was not found.', 404);
@@ -16,15 +16,15 @@ class AuthService {
     // Validate password
     const isPassCorrect = bcrypt.compareSync(password, user.password);
     if (!isPassCorrect) {
-      throw new AppError('Wrong Password', 401);
+      throw new AppError('Wrong password', 401);
     }
 
     return new UserDataDTO(user);
   }
 
   /**
- * Logging out by Removing Refresh token from DB
- */
+   * Logging out by Removing Refresh token from DB
+   */
   static async logoutUser(refreshToken: string) {
     if (!refreshToken) {
       throw new AppError(`You are not authorized`, 401);
@@ -36,9 +36,9 @@ class AuthService {
   }
 
   /**
- * Generate new AccessToken and RefreshToken
- * !(typeof userData === 'object') condition is added because ts says .verify may return string
- */
+   * Generate new AccessToken and RefreshToken
+   * !(typeof userData === 'object') condition is added because .verify() may return string
+   */
   static async refreshUserToken(refreshToken: string) {    
     if (!refreshToken) {      
       throw new AppError(`You are not authorized`, 401);
@@ -52,7 +52,7 @@ class AuthService {
       throw new AppError(`You are not authorized`, 401);
     }
 
-    // In case user data have bee changed
+    // In case user data have been changed
     const user = await UserService.getOne(userData.id);
 
     if (!user) {

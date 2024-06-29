@@ -2,6 +2,8 @@
 
 This project is a RESTful API built with Node.js and Express.js. It provides endpoints for registration, authentication, and task management. Sequelize is used as the ORM (Object-Relational Mapping) tool for interacting with the MySQL database. The project follows the MVC (Model-View-Controller) architecture pattern for organizing code.
 
+The application is secured with cors, helmet, express rate limiting packages and the endpoints are protected with JWT tokens.
+
 ## Technologies Used
 
 - **Express**: Web framework for Node.js.

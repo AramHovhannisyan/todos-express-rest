@@ -14,7 +14,6 @@ class TaskService {
 
   /**
    * Create task
-   * Check for duplicate name
    */
   static async createOne(title: string, content: string, status: TaskStatus, userId: number) {
     try {
@@ -22,17 +21,9 @@ class TaskService {
   
       return task;
     } catch (error: any) {
-      let errMsg = '';
-      let errCode = 500;
-
-      if (error?.original?.errno === 1062) {
-        errMsg = 'Task with provided name already exists';
-        errCode = 400;
-      } else {
-        console.error("error:", error);
-      }
+      console.error("error:", error);
       
-      throw new AppError(errMsg, errCode);
+      throw new AppError('Internal Server Error', 500);
     }
   }
 
@@ -45,7 +36,6 @@ class TaskService {
   /**
    * Update task
    * Full or partly update
-   * Check for unique task title
    * Check if wrong task provided
    */
   static async updateOne(id: number, title: string, content: string, status: TaskStatus, userId: number) {
@@ -78,9 +68,6 @@ class TaskService {
       if (error?.original?.errno === 1452) {
         errMsg = 'Task with provided id not found';
         errCode = 404;
-      } else if (error?.original?.errno === 1062) {
-        errMsg = 'Task with provided name already exists';
-        errCode = 400;
       } else {
         console.error("error:", error);
       }
@@ -89,6 +76,9 @@ class TaskService {
     }
   }
 
+  /**
+   * Delete task by pk
+   */
   static async deleteOne(id: number, userId: number) {
     const task = await TaskRepository.get(id, userId);
 
@@ -103,7 +93,7 @@ class TaskService {
 
   /**
    * Update task status only
-   * Check if wrong user or task provided
+   * Check if the author is the current user
    */
   static async markOneAs(id: number, status: TaskStatus, userId: number) {
     try {
